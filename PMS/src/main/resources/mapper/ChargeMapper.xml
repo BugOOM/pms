@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.ChargeMapper">
+	<select id="findAllCharges" resultType="Charge">
+		select * from charge
+	</select>
+	<select id="countAllCharges" resultType="int">
+		select count(*) from charge
+	</select>
+	<update id="updateCharge">
+		update charge set charge_name=#{chargeName},charge_threshold=#{chargeThreshold},charge_low=#{chargeLow},charge_high=#{chargeHigh} where
+		charge_type =#{chargeType}
+	</update>
+	<insert id="insertCharge">
+		insert into charge(charge_name,charge_threshold,charge_low,charge_high) 
+		values(#{chargeName},#{chargeThreshold},#{chargeLow},#{chargeHigh})
+	</insert>
+	<select id="findChargeByChargeType" resultType="Charge">
+		select * from charge where charge_type=#{value}
+	</select>
+</mapper>

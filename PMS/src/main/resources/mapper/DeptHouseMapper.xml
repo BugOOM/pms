@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.DeptHouseMapper">
+	<!-- 管理员查询用 -->
+	<select id="findDeptHouse" resultType="DeptHouse">
+		select * from  dept,house,owner 
+		<where>
+				dept.dept_id=house.dept_id and house.owner_id=owner.owner_id 
+			<if test="deptId !=null and deptId!=''">
+				and dept.dept_id=#{deptId}
+			</if>
+			<if test="houseNum !=null and houseNum !=''">
+				and house_num like concat(#{houseNum},'%')
+			</if>
+			<if test="ownerName !=null and ownerName!=''">
+				and owner_name like concat('%',#{ownerName},'%')
+			</if>
+			<if test="ownerPhone !=null and ownerPhone!=''">
+				and owner_phone like concat('%',#{ownerPhone},'%')
+			</if>
+		</where>
+	</select>
+	<select id="countDeptHouse" resultType="int">
+		select count(*) from  dept,house,owner
+		<where>
+				dept.dept_id=house.dept_id and house.owner_id=owner.owner_id 
+			<if test="deptId !=null and deptId!=''" >
+				and dept.dept_id=#{deptId}
+			</if>
+			<if test="houseNum !=null and houseNum !=''">
+				and house_num like concat(#{houseNum},'%')
+			</if>
+			<if test="ownerName !=null and ownerName!=''">
+				and owner_name like concat('%',#{ownerName},'%')
+			</if>
+			<if test="ownerPhone !=null and ownerPhone!=''">
+				and owner_phone like concat('%',#{ownerPhone},'%')
+			</if>
+		</where>
+	</select>
+	<!-- 用户查询用 -->
+	<select id="findUserDeptHouse" resultType="DeptHouse">
+		select * from  dept,house
+		<where>
+				dept.dept_id=house.dept_id and owner_id is NULL
+			<if test="deptId !=null and deptId!=''">
+				and dept.dept_id=#{deptId}
+			</if>
+			<if test="houseNum !=null and houseNum !=''">
+				and house_num like concat(#{houseNum},'%')
+			</if>
+			
+		</where>
+	</select>
+	<select id="countUserDeptHouse" resultType="int">
+		select count(*) from  dept,house
+		<where>
+				dept.dept_id=house.dept_id and owner_id is NULL
+			<if test="deptId !=null and deptId!=''" >
+				and dept.dept_id=#{deptId}
+			</if>
+			<if test="houseNum !=null and houseNum !=''">
+				and house_num like concat(#{houseNum},'%')
+			</if>
+			
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,120 @@
+<title>楼栋</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>住房管理</cite></a>
+        <a><cite>楼栋管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-useradminrole-formlist">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">楼栋筛选</label>
+                    <div class="layui-input-block">
+                        <select name="deptId" lay-filter="LAY-user-adminrole-type" id="deptSelect">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-card-body">
+                <div style="padding-bottom: 10px;">
+                    <button class="layui-btn layuiadmin-btn-role" data-type="add">添加</button>
+                </div>
+
+                <table id="LAY-user-back-role" lay-filter="LAY-user-back-role"></table>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 'table'], function() {
+            var $ = layui.$,
+                admin = layui.admin,
+                view = layui.view,
+                table = layui.table,
+                form = layui.form;
+            var deptSelect = '<option value="">全部楼栋</option>'
+
+            function updateSelect() {
+                $.ajax({
+                    url: "/dept/findDept",
+                    type: "post",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data.data, function(index, item) {
+                            deptSelect += "<option value=\"" + item.deptId + "\">" + item.deptName + "</option>";
+                        });
+                        $("#deptSelect").html(deptSelect);
+                        layui.form.render("select");
+                    }
+                })
+            }
+            updateSelect();
+            form.render(null, 'layadmin-useradminrole-formlist');
+
+            //搜索角色
+            form.on('select(LAY-user-adminrole-type)', function(data) {
+                //执行重载
+                table.reload('LAY-user-back-role', {
+                    url: "/dept/findDept",
+                    type: "post",
+                    where: {
+                        "deptId": data.value
+                    }
+                });
+            });
+
+            //事件
+            var active = {
+                add: function() {
+                    admin.popup({
+                        title: '添加新楼',
+                        area: ['500px', '480px'],
+                        id: 'LAY-popup-user-add',
+                        success: function(layero, index) {
+                            view(this.id).render('user/dept/roleform').done(function() {
+                                form.render(null, 'layuiadmin-form-role');
+
+                                //监听提交
+                                form.on('submit(LAY-user-role-submit)', function(data) {
+                                    var field = data.field; //获取提交的字段
+                                    console.log(field)
+                                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                        //$.ajax({});
+                                    $.ajax({
+                                        url: "/dept/add",
+                                        type: "post",
+                                        dataType: "json",
+                                        data: field,
+                                        success: function(data) {
+                                            layer.msg(data.msg, {
+                                                time: 1000,
+                                                end: function() {
+                                                    updateSelect();
+                                                    layui.table.reload('LAY-user-back-role'); //重载表格
+
+                                                }
+                                            });
+                                        }
+                                    })
+
+                                    layer.close(index); //执行关闭 
+                                });
+                            });
+                        }
+                    });
+                }
+            }
+            $('.layui-btn.layuiadmin-btn-role').on('click', function() {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>

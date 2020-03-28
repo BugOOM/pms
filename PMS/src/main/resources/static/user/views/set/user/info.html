@@ -1,0 +1,96 @@
+<title>
+    设置我的资料</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>设置</cite></a>
+        <a><cite>我的资料</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置我的资料</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template lay-url="/sys/getUser" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="text" name="username" value="{{d.data.username}}" readonly class="layui-input">
+                                </script>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template lay-url="/sys/getPeople" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="text" name="ownerName" value="{{d.data.ownerName||''}}" lay-verify="name" autocomplete="off" class="layui-input">
+                                </script>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <script type="text/html" template lay-url="/sys/getPeople" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="radio" name="ownerSex" value="男" title="男" {{ d.data.ownerSex==='男' ? 'checked' : '' }}>
+                                    <input type="radio" name="ownerSex" value="女" title="女" {{ d.data.ownerSex==='女' ? 'checked' : '' }}>
+                                </script>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">年龄</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template lay-url="/sys/getPeople" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="text" name="ownerAge" value="{{d.data.ownerAge||''}}" lay-verify="age" autocomplete="off" class="layui-input">
+                                </script>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">身份证号</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template lay-url="/sys/getPeople" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="text" name="ownerNum" value="{{d.data.ownerNum||''}}" autocomplete="off" class="layui-input">
+                                </script>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">手机</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template lay-url="/sys/getPeople" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="text" name="ownerPhone" value="{{d.data.ownerPhone||''}}" lay-verify="phone" autocomplete="off" class="layui-input">
+                                </script>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template lay-url="/sys/getUser" lay-done="layui.element.render('nav', 'layadmin-layout-right');">
+                                    <input type="text" name="email" value="{{d.data.email}}" lay-verify="email" autocomplete="off" class="layui-input">
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认修改</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('set', layui.factory('set'));
+</script>

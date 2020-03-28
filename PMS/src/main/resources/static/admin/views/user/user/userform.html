@@ -1,0 +1,44 @@
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择收费项</label>
+        <div class="layui-input-inline">
+            <select id="chargeName" name="chargeType"></select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">使用量</label>
+        <div class="layui-input-inline">
+            <input type="text" name="payUse" value="" lay-verify="required" placeholder="请输入使用量" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['admin', 'form', 'upload'], function() {
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload;
+        $(function() {
+            var chargeName = '<option value="">选择项目</option>'
+            $.ajax({
+                url: "/charge/findAll",
+                type: "post",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data.data, function(index, item) {
+                        chargeName += "<option value=\"" + item.chargeType + "\">" + item.chargeName + "</option>";
+                    });
+                    $("#chargeName").html(chargeName);
+                    layui.form.render("select");
+                }
+            })
+        })
+    })
+</script>
+</script>

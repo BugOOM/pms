@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.PayHouseMapper">
+	<select id="findAllPay" resultType="PayHouse">
+			SELECT
+			  	pay.pay_id,
+			  	dept.dept_name,
+			    house.house_num,
+			    `owner`.owner_id,
+				`owner`.owner_name,
+				`owner`.owner_phone,
+				charge.charge_name,
+				pay.pay_use,
+				pay.pay_total,
+				pay.pay_status,
+				pay.pay_time
+			FROM
+				dept,
+				house,
+				OWNER,
+				charge,
+				pay
+			<where>
+				pay.charge_type = charge.charge_type
+			    AND pay.house_id = house.house_id
+			    AND house.owner_id = `owner`.owner_id
+			    AND house.dept_id = dept.dept_id
+			    <if test=" ownerName !=null and ownerName !=''">
+			    	and owner_name like concat('%',#{ownerName},'%')
+			    </if>
+			    <if test=" ownerPhone !=null and ownerPhone !=''">
+			    	and owner_phone = #{ownerPhone}
+			    </if>
+			    <if test=" chargeType !=null and chargeType !=''">
+			    	and charge.charge_type =#{chargeType}
+			    </if>
+			    <if test=" payStatus !=null and payStatus !='' or payStatus==0">
+			    	and pay_status =#{payStatus}
+			    </if>
+			    <if test="ownerId !=null and ownerId !=''">
+			    	and owner.owner_id=#{ownerId}
+			    </if>
+			</where>
+	</select>
+	<select id="countAllPay" resultType="int">
+			SELECT
+			  	count(1)
+			FROM
+				dept,
+				house,
+				OWNER,
+				charge,
+				pay
+			<where>
+				pay.charge_type = charge.charge_type
+			    AND pay.house_id = house.house_id
+			    AND house.owner_id = `owner`.owner_id
+			    AND house.dept_id = dept.dept_id
+			    <if test=" ownerName !=null and ownerName !=''">
+			    	and owner_name like concat('%',#{ownerName},'%')
+			    </if>
+			    <if test=" ownerPhone !=null and ownerPhone !=''">
+			    	and owner_phone = #{ownerPhone}
+			    </if>
+			    <if test=" chargeType !=null and chargeType !=''">
+			    	and charge.charge_type =#{chargeType}
+			    </if>
+			    <if test=" payStatus !=null and payStatus !='' or payStatus==0">
+			    	and pay_status =#{payStatus}
+			    </if>
+			    <if test="ownerId !=null and ownerId !=''">
+			    	and owner.owner_id=#{ownerId}
+			    </if>
+			</where>
+	</select>
+	<update id="pay">
+		update pay set pay_status=1,pay_time=#{payTime} where pay_id=#{payId}
+	</update>
+</mapper>

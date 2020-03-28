@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.PayMapper">
+	<insert id="insertPay">
+		insert into pay(charge_type,pay_use,pay_total,pay_status,house_id)
+		values(#{chargeType},#{payUse},#{payTotal},#{payStatus},#{houseId})
+	</insert>
+	
+	<select id="findPayByPayId" resultType="Pay">
+		select * from pay where pay_id=#{value}
+	</select>
+</mapper>

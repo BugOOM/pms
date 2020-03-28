@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.OwnerMapper">
+	<select id="selectOwnerById" resultType="Owner">
+		select * from owner where owner_id =#{id}
+	</select>
+	<select id="findAll" resultType="HouseModel">
+		SELECT
+			*
+		FROM
+			dept,
+			house,
+			OWNER
+		WHERE
+			dept.dept_id = house.dept_id
+		AND `owner`.owner_id = house.owner_id
+</select>
+	
+	<select id="total" resultType="int">
+		select count(1) from owner
+	</select>
+	
+	<insert id="insertOwner">
+		insert into owner(owner_name,owner_sex,owner_age,owner_num,owner_phone)
+		values(#{ownerName},#{ownerSex},#{ownerAge},#{ownerNum},#{ownerPhone})
+		<selectKey resultType="int" keyProperty="ownerId" order="AFTER">
+			select @@identity
+		</selectKey>
+	</insert>
+	
+	<update id="updateOwner">
+		update owner set owner_name=#{owner.ownerName},owner_sex=#{owner.ownerSex},owner_age=#{owner.ownerAge},
+		owner_num=#{owner.ownerNum},owner_phone=#{owner.ownerPhone} where owner_id=#{user.ownerId}
+	</update>
+</mapper>

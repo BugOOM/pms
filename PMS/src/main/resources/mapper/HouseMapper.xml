@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.HouseMapper">
+	<insert id="insertHouse">
+		insert into house(house_num,dept_id) values(#{houseNum},#{deptId})
+	</insert>
+	<update id="updateHouse">
+		update house set owner_id=#{ownerId} where house_id=#{houseId}
+	</update>
+	<select id="findHouseByHouseId" resultType="House">
+		select * from house where house_id=#{value}
+	</select>
+</mapper>

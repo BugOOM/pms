@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pms.mapper.ComplaintMapper">
+	<insert id="insertComplaint">
+		insert into complaint(complaint_user,complaint_title,complaint_content,complaint_time,complaint_status)
+		values(#{complaintUser},#{complaintTitle},#{complaintContent},#{complaintTime},#{complaintStatus})
+	</insert>
+	<select id="findMyComplaint" resultType="Complaint">
+		select * from complaint 
+		<where>
+			<if test="complaint.complaintId!=null and complaint.complaintId !=''">
+				 complaint_id=#{complaint.complaintId}
+			</if>
+			<if test="complaint.complaintStatus!=null and complaint.complaintStatus !='' or complaint.complaintStatus==0">
+				 complaint_status=#{complaint.complaintStatus}
+			</if>
+			<if test="complaint.complaintTitle!=null and complaint.complaintTitle !=''">
+				and complaint_title like concat('%',#{complaint.complaintTitle},'%')
+			</if>
+			<if test="complaint.complaintContent!=null and complaint.complaintContent !=''">
+				and complaint_content like concat('%',#{complaint.complaintContent},'%')
+			</if>
+			<if test="username !=null and username != ''">
+				and complaint_user=#{username}
+			</if>
+		</where>
+	</select>
+	<select id="countComplaint" resultType="int">
+		select count(*) from complaint 
+		<where>
+			<if test="complaint.complaintId!=null and complaint.complaintId !=''">
+				 complaint_id=#{complaint.complaintId}
+			</if>
+			<if test="complaint.complaintStatus!=null and complaint.complaintStatus !='' or complaint.complaintStatus==0">
+				 complaint_status=#{complaint.complaintStatus}
+			</if>
+			<if test="complaint.complaintTitle!=null and complaint.complaintTitle !=''">
+				and complaint_title like concat('%',#{complaint.complaintTitle},'%')
+			</if>
+			<if test="complaint.complaintContent!=null and complaint.complaintContent !=''">
+				and complaint_content like concat('%',#{complaint.complaintContent},'%')
+			</if>
+			<if test="username !=null and username != ''">
+				and complaint_user=#{username}
+			</if>
+		</where>
+	</select>
+	<update id="handleComplaint">
+		update complaint set complaint_status=#{complaintStatus} where complaint_id=#{complaintId}
+	</update>
+</mapper>
